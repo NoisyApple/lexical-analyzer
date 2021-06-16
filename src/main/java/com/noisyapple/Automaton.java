@@ -98,6 +98,21 @@ public class Automaton {
 
     }
 
+    // Returns wether the passed input is valid within the automaton.
+    public boolean evaluate(String input) {
+        reset();
+
+        for (int i = 0; i < input.length(); i++) {
+            insertInput(input.charAt(i));
+
+            if (getCurrentState() == null) {
+                return false;
+            }
+        }
+
+        return getCurrentState().isFinal();
+    }
+
     // Resets automaton to its original state.
     public void reset() {
         currentState = initialState;

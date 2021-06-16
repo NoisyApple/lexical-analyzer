@@ -23,6 +23,10 @@ public class State {
         return isFinal;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     // GETTERS ---
 
     // Returns a string with the data of the State.
