@@ -6,6 +6,14 @@ import java.util.Arrays;
 // Models an Lexical analyzer.
 public class LexicalAnalyzer {
 
+    // State label constans.
+    public static final String NATURAL_INTEGER_NUMBER = "B";
+    public static final String ZERO = "C";
+    public static final String FLOATING_POINT_NUMBER = "E";
+    public static final String IDENTIFIER = "F";
+    public static final String SINGLE_CHARACTER = "H";
+    public static final String RESERVED_WORD = "J";
+
     // Constant list with all valid reserved words.
     private final ArrayList<String> RESERVED_WORDS = new ArrayList<String>() {
         {
@@ -31,6 +39,8 @@ public class LexicalAnalyzer {
 
         indexA = 0;
         indexB = 0;
+
+        symbolTable = new SymbolTable();
 
         State sA = new State("A", true, false);
         State sB = new State("B", false, true);
@@ -104,12 +114,14 @@ public class LexicalAnalyzer {
 
                     if (automaton.evaluate(lexeme)) {
 
-                        if (automaton.getCurrentState().getLabel() == "J"
+                        if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
                             // Lexical error.
                             System.out.println("'" + lexeme + "' is not valid.");
-                        } else {
-                            installToken(generateToken(lexeme, automaton.getCurrentState()));
+                        } else if (automaton.getCurrentState()
+                                .getLabel() == LexicalAnalyzer.IDENTIFIER) {
+                            symbolTable.installToken(
+                                    generateToken(lexeme, automaton.getCurrentState()));
                         }
 
                     } else {
@@ -129,33 +141,28 @@ public class LexicalAnalyzer {
 
     }
 
-    // Installs the passed token into the SymbolTable.
-    public void installToken(Token token) {
-        System.out.println(token);
-    }
-
     // Returns a token based in the passed lexeme and State.
     public Token generateToken(String lexeme, State foundState) {
 
         Token generatedToken;
 
         switch (foundState.getLabel()) {
-            case "B":
+            case LexicalAnalyzer.NATURAL_INTEGER_NUMBER:
                 generatedToken = new Token(lexeme, Token.NATURAL_INTEGER_NUMBER);
                 break;
-            case "C":
+            case LexicalAnalyzer.ZERO:
                 generatedToken = new Token(lexeme, Token.ZERO);
                 break;
-            case "E":
+            case LexicalAnalyzer.FLOATING_POINT_NUMBER:
                 generatedToken = new Token(lexeme, Token.FLOATING_POINT_NUMBER);
                 break;
-            case "F":
+            case LexicalAnalyzer.IDENTIFIER:
                 generatedToken = new Token(lexeme, Token.IDENTIFIER);
                 break;
-            case "H":
+            case LexicalAnalyzer.SINGLE_CHARACTER:
                 generatedToken = new Token(lexeme, (int) lexeme.charAt(0));
                 break;
-            case "J":
+            case LexicalAnalyzer.RESERVED_WORD:
                 generatedToken = new Token(lexeme, Token.RESERVED_WORD);
                 break;
             default:
@@ -163,5 +170,10 @@ public class LexicalAnalyzer {
         }
 
         return generatedToken;
+    }
+
+    // Returns a string with the data of the LexicalAnalyzer.
+    public String toString() {
+        return symbolTable.toString();
     }
 }

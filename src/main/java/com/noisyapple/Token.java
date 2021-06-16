@@ -43,6 +43,14 @@ public class Token {
         classification = CLASSIFICATIONS.get(attribute);
     }
 
+    // GETTERS +++
+
+    public String getLexeme() {
+        return lexeme;
+    }
+
+    // GETTERS ---
+
     // Returns a String with the data of the token.
     public String toString() {
         return "[" + lexeme + ", " + classification + ", " + attribute + "]";

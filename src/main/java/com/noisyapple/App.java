@@ -10,6 +10,7 @@ public class App {
             LexicalAnalyzer lA = new LexicalAnalyzer(fileData);
 
             lA.startAnalysis();
+            System.out.println(lA.toString());
 
         } else {
             throw new Error("No path specified.");
