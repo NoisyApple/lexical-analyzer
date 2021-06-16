@@ -33,6 +33,7 @@ public class LexicalAnalyzer {
     private Automaton automaton;
     private SymbolTable symbolTable;
     private TokenTable tokenTable;
+    private ArrayList<String> errorTable;
 
     // Class constructor.
     public LexicalAnalyzer(String file) {
@@ -43,6 +44,7 @@ public class LexicalAnalyzer {
 
         symbolTable = new SymbolTable();
         tokenTable = new TokenTable();
+        errorTable = new ArrayList<String>();
 
         State sA = new State("A", true, false);
         State sB = new State("B", false, true);
@@ -100,7 +102,7 @@ public class LexicalAnalyzer {
                     // Lexical error.
                     if (indexB < file.length()) {
                         if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
-                            System.out.println("'" + file.charAt(indexB) + "' is not valid.");
+                            errorTable.add("'" + file.charAt(indexB) + "' is not valid.");
                         }
                     }
 
@@ -121,7 +123,8 @@ public class LexicalAnalyzer {
                         if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
                             // Lexical error.
-                            System.out.println("'" + lexeme + "' is not valid.");
+                            errorTable.add("'" + lexeme + "' is not valid.");
+
                         } else if (automaton.getCurrentState()
                                 .getLabel() == LexicalAnalyzer.IDENTIFIER) {
 
@@ -138,7 +141,7 @@ public class LexicalAnalyzer {
 
                     } else {
                         // Lexical error.
-                        System.out.println("'" + lexeme + "' is not valid.");
+                        errorTable.add("'" + lexeme + "' is not valid.");
                     }
 
                     indexA = indexB;
@@ -198,7 +201,12 @@ public class LexicalAnalyzer {
         data += "\n";
 
         data += "--------------[TOKEN TABLE]---------------\n";
-        data += tokenTable.toString();
+        data += tokenTable.toString() + "\n\n";
+
+        data += "--------------[ERROR TABLE]---------------\n";
+        for (int i = 0; i < errorTable.size(); i++) {
+            data += errorTable.get(i) + "\n";
+        }
 
         return data;
     }
