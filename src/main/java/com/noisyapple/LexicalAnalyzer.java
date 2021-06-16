@@ -178,7 +178,7 @@ public class LexicalAnalyzer {
                 generatedToken = new Token(lexeme, (int) lexeme.charAt(0));
                 break;
             case LexicalAnalyzer.RESERVED_WORD:
-                generatedToken = new Token(lexeme, Token.RESERVED_WORD);
+                generatedToken = new Token(lexeme, Token.RESERVED_WORDS.get(lexeme));
                 break;
             default:
                 throw new Error("State label doesn't match with states in automaton.");

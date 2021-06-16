@@ -12,6 +12,21 @@ public class Token {
     public static final int FLOATING_POINT_NUMBER = 298;
     public static final int RESERVED_WORD = 300;
 
+
+    // Reserved words constant.
+    public static final Hashtable<String, Integer> RESERVED_WORDS =
+            new Hashtable<String, Integer>() {
+                {
+                    put("Programa", 300);
+                    put("Real", 301);
+                    put("Entero", 302);
+                    put("Leer", 303);
+                    put("Escribir", 304);
+                    put("Inicio", 305);
+                    put("Fin", 306);
+                }
+            };
+
     // Classifications constant.
     private final Hashtable<Integer, String> CLASSIFICATIONS = new Hashtable<Integer, String>() {
         {
@@ -28,6 +43,12 @@ public class Token {
             put(297, "Zero");
             put(298, "Floating point number");
             put(300, "Reserved word");
+            put(301, "Reserved word");
+            put(302, "Reserved word");
+            put(303, "Reserved word");
+            put(304, "Reserved word");
+            put(305, "Reserved word");
+            put(306, "Reserved word");
         }
     };
 
