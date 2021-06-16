@@ -1,6 +1,7 @@
 package com.noisyapple;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Automaton {
     private ArrayList<State> states; // Q
@@ -52,6 +53,40 @@ public class Automaton {
 
     // Updates the automaton based in the character passed as input.
     public void insertInput(char c) {
+        ArrayList<Transition> currentStateTransitions = new ArrayList<Transition>();
+
+        // Filters all transitions that have currentState as their origin state.
+        transitions.forEach(t -> {
+            if (t.getOriginState().equals(currentState)) {
+                currentStateTransitions.add(t);
+            }
+        });
+
+        // If transitions were found after filter.
+        if (currentStateTransitions.size() > 0) {
+            ArrayList<Transition> matchingTransitions = new ArrayList<Transition>();
+
+            // Filters all found transitions that matches the pattern of the character passed.
+            currentStateTransitions.forEach(t -> {
+                if (Pattern.matches(t.getRegExp(), String.valueOf(c))) {
+                    matchingTransitions.add(t);
+                }
+            });
+
+            // Errors.
+            if (matchingTransitions.size() == 0) {
+                throw new Error("No matching transitions found.");
+            } else if (matchingTransitions.size() > 1) {
+                throw new Error("More than one matching transition was found.");
+            }
+
+            // The destinationState of the matching transition is set as the new currentState.
+            currentState = matchingTransitions.get(0).getDestinationState();
+
+        } else { // If not, throws an error.
+            throw new Error("No transitions found.");
+        }
+
 
     }
 

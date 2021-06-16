@@ -14,6 +14,22 @@ public class Transition {
         this.regExp = regExp;
     }
 
+    // GETTERS +++
+
+    public State getOriginState() {
+        return originState;
+    }
+
+    public State getDestinationState() {
+        return destinationState;
+    }
+
+    public String getRegExp() {
+        return regExp;
+    }
+
+    // GETTERS ---
+
     // Returns a string with the data of the Transition.
     public String toString() {
         return "(" + originState + ", " + regExp + ", " + destinationState + ")";

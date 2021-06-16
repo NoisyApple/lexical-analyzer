@@ -12,8 +12,8 @@ public class App {
         State sC = new State("C", false, true);
 
         Transition tA_B = new Transition(sA, sB, "[1-9]");
-        Transition tA_C = new Transition(sA, sB, "[0-9]");
-        Transition tB_B = new Transition(sA, sB, "0");
+        Transition tA_C = new Transition(sA, sC, "0");
+        Transition tB_B = new Transition(sB, sB, "[0-9]");
 
         ArrayList<State> states = new ArrayList<State>(Arrays.asList(sA, sB, sC));
         ArrayList<String> alphabet = new ArrayList<String>(Arrays.asList("[1-9]", "[0-9]", "0"));
@@ -23,6 +23,19 @@ public class App {
         Automaton m = new Automaton(states, alphabet, transitions);
 
         System.out.println(m);
+
+        m.insertInput('9');
+
+        System.out.println(m.getCurrentState());
+
+        m.insertInput('1');
+
+        System.out.println(m.getCurrentState());
+
+        m.insertInput('2');
+
+        System.out.println(m.getCurrentState());
+
 
         // if (args.length > 0) {
 
