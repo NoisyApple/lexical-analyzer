@@ -1,4 +1,4 @@
-package com.noisyapple.app;
+package com.noisyapple;
 
 import java.io.BufferedReader;
 import java.io.File;
