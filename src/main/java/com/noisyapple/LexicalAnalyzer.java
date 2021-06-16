@@ -1,0 +1,56 @@
+package com.noisyapple;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+// Models an Lexical analyzer.
+public class LexicalAnalyzer {
+    private String file;
+    private int indexA;
+    private int indexB;
+    private Automaton automaton;
+
+    public LexicalAnalyzer(String file) {
+        this.file = file;
+
+        indexA = 0;
+        indexB = 0;
+
+        State sA = new State("A", true, false);
+        State sB = new State("B", false, true);
+        State sC = new State("C", false, true);
+        State sD = new State("D", false, false);
+        State sE = new State("E", false, true);
+        State sF = new State("F", false, true);
+        State sG = new State("G", false, false);
+        State sH = new State("H", false, true);
+        State sI = new State("I", false, false);
+        State sJ = new State("J", false, true);
+
+        Transition tA_B = new Transition(sA, sB, "[1-9]");
+        Transition tA_C = new Transition(sA, sC, "0");
+        Transition tA_F = new Transition(sA, sF, "[a-z]");
+        Transition tA_H = new Transition(sA, sH, ";|=|\\+|-|/|\\(|\\)|,");
+        Transition tA_I = new Transition(sA, sI, "[A-Z]");
+        Transition tB_B = new Transition(sB, sB, "[0-9]");
+        Transition tB_D = new Transition(sB, sD, "\\.");
+        Transition tC_D = new Transition(sC, sD, "\\.");
+        Transition tD_E = new Transition(sD, sE, "[0-9]");
+        Transition tE_E = new Transition(sE, sE, "[0-9]");
+        Transition tF_F1 = new Transition(sF, sF, "[a-z]");
+        Transition tF_F2 = new Transition(sF, sF, "[0-9]");
+        Transition tF_G = new Transition(sF, sG, "_");
+        Transition tG_F1 = new Transition(sG, sF, "[a-z]");
+        Transition tG_F2 = new Transition(sG, sF, "[0-9]");
+        Transition tI_J = new Transition(sI, sJ, "[a-z]");
+        Transition tJ_J = new Transition(sJ, sJ, "[a-z]");
+
+        ArrayList<State> states =
+                new ArrayList<State>(Arrays.asList(sA, sB, sC, sD, sE, sF, sG, sH, sI, sJ));
+        ArrayList<Transition> transitions =
+                new ArrayList<Transition>(Arrays.asList(tA_B, tA_C, tA_F, tA_H, tA_I, tB_B, tB_D,
+                        tC_D, tD_E, tE_E, tF_F1, tF_F2, tF_G, tG_F1, tG_F2, tI_J, tJ_J));
+
+        automaton = new Automaton(states, transitions);
+    }
+}

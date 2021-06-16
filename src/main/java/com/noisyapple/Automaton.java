@@ -3,6 +3,7 @@ package com.noisyapple;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+// Models an Automaton.
 public class Automaton {
     private ArrayList<State> states; // Q
     private ArrayList<String> alphabet; // Sigma.
