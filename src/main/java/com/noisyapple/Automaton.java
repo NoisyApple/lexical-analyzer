@@ -80,17 +80,20 @@ public class Automaton {
                 }
             });
 
-            if (matchingTransitions.size() == 0) {
-                currentState = null;
-            } else if (matchingTransitions.size() > 1) { // Error.
+            // Error.
+            if (matchingTransitions.size() > 1) {
                 throw new Error("More than one matching transition was found.");
             }
 
-            // The destinationState of the matching transition is set as the new currentState.
-            currentState = matchingTransitions.get(0).getDestinationState();
+            if (matchingTransitions.size() == 0) {
+                currentState = null;
+            } else {
+                // The destinationState of the matching transition is set as the new currentState.
+                currentState = matchingTransitions.get(0).getDestinationState();
+            }
 
         } else { // If not, throws an error.
-            throw new Error("No transitions found.");
+            currentState = null;
         }
 
     }

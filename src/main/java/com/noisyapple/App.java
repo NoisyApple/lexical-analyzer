@@ -2,13 +2,16 @@ package com.noisyapple;
 
 public class App {
     public static void main(String[] args) {
-        // if (args.length > 0) {
+        if (args.length > 0) {
 
-        // String fileData = ExternalFileReader.fileToString(args[0]);
-        // System.out.println(fileData);
+            String fileData = ExternalFileReader.fileToString(args[0]);
 
-        // } else {
-        // System.out.println("No path specified.");
-        // }
+            LexicalAnalyzer lA = new LexicalAnalyzer(fileData);
+
+            lA.startAnalysis();
+
+        } else {
+            throw new Error("No path specified.");
+        }
     }
 }

@@ -10,6 +10,7 @@ public class LexicalAnalyzer {
     private int indexB;
     private Automaton automaton;
 
+    // Class constructor.
     public LexicalAnalyzer(String file) {
         this.file = file;
 
@@ -52,5 +53,42 @@ public class LexicalAnalyzer {
                         tC_D, tD_E, tE_E, tF_F1, tF_F2, tF_G, tG_F1, tG_F2, tI_J, tJ_J));
 
         automaton = new Automaton(states, transitions);
+    }
+
+    // Checking wether the content of the file matches the automaton's lexical units.
+    public void startAnalysis() {
+
+        while (indexB <= file.length()) {
+
+            if (indexB != file.length()) {
+                automaton.insertInput(file.charAt(indexB));
+            } else {
+                automaton.insertInput('!');
+
+            }
+
+            if (automaton.getCurrentState() == null) {
+                if (indexA == indexB) {
+                    indexA += 1;
+                    indexB += 1;
+                } else { // Lexeme found.
+                    String lexeme = "";
+
+                    for (int i = indexA; i < indexB; i++) {
+                        lexeme += file.charAt(i);
+                    }
+
+                    System.out.println(lexeme);
+
+                    indexA = indexB;
+                }
+
+                automaton.reset();
+            } else {
+                indexB += 1;
+            }
+
+        }
+
     }
 }
