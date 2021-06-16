@@ -198,7 +198,7 @@ public class LexicalAnalyzer {
         for (int i = 0; i < RESERVED_WORDS.size(); i++) {
             data += RESERVED_WORDS.get(i) + "\n";
         }
-        data += "\n";
+        data += "\n\n";
 
         data += "--------------[TOKEN TABLE]---------------\n";
         data += tokenTable.toString() + "\n\n";
