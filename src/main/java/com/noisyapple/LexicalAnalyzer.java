@@ -78,7 +78,12 @@ public class LexicalAnalyzer {
                         lexeme += file.charAt(i);
                     }
 
-                    System.out.println(lexeme);
+                    if (automaton.evaluate(lexeme)) {
+                        System.out.println(
+                                "'" + lexeme + "' found at state: " + automaton.getCurrentState());
+                    }
+
+
 
                     indexA = indexB;
                 }
