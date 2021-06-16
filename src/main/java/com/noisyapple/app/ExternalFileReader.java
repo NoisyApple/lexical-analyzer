@@ -20,6 +20,8 @@ public class ExternalFileReader {
                 contentCopy += (char) c;
             }
 
+            bR.close();
+
         } catch (Exception e) {
             System.out.println("File not found at specified path.");
         }
