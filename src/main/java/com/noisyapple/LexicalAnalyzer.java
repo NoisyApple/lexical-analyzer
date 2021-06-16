@@ -69,8 +69,17 @@ public class LexicalAnalyzer {
 
             if (automaton.getCurrentState() == null) {
                 if (indexA == indexB) {
+
+                    // Lexical error.
+                    if (indexB < file.length()) {
+                        if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
+                            System.out.println("'" + file.charAt(indexB) + "' is not valid.");
+                        }
+                    }
+
                     indexA += 1;
                     indexB += 1;
+
                 } else { // Lexeme found.
                     String lexeme = "";
 
@@ -81,9 +90,10 @@ public class LexicalAnalyzer {
                     if (automaton.evaluate(lexeme)) {
                         System.out.println(
                                 "'" + lexeme + "' found at state: " + automaton.getCurrentState());
+                    } else {
+                        // Lexical error.
+                        System.out.println("'" + lexeme + "' is not valid.");
                     }
-
-
 
                     indexA = indexB;
                 }

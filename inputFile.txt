@@ -4,7 +4,7 @@ Inicio
 
     Leer (num);
 
-    multiple = 56 + (numero – num);
+    multiple = 56 + (numero - num);
     numero = multiple / 123.99;
     res = numero + cuenta;
 
