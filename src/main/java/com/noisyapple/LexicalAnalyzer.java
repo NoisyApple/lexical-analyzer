@@ -5,6 +5,20 @@ import java.util.Arrays;
 
 // Models an Lexical analyzer.
 public class LexicalAnalyzer {
+
+    // Constant list with all valid reserved words.
+    private final ArrayList<String> RESERVED_WORDS = new ArrayList<String>() {
+        {
+            add("Programa");
+            add("Real");
+            add("Entero");
+            add("Leer");
+            add("Escribir");
+            add("Inicio");
+            add("Fin");
+        }
+    };
+
     private String file;
     private int indexA;
     private int indexB;
@@ -89,10 +103,14 @@ public class LexicalAnalyzer {
                     }
 
                     if (automaton.evaluate(lexeme)) {
-                        System.out.println(
-                                "'" + lexeme + "' found at state: " + automaton.getCurrentState());
 
-                        addToSymbolTable(lexeme, automaton.getCurrentState());
+                        if (automaton.getCurrentState().getLabel() == "J"
+                                && !RESERVED_WORDS.contains(lexeme)) {
+                            // Lexical error.
+                            System.out.println("'" + lexeme + "' is not valid.");
+                        } else {
+                            installToken(generateToken(lexeme, automaton.getCurrentState()));
+                        }
 
                     } else {
                         // Lexical error.
@@ -111,8 +129,39 @@ public class LexicalAnalyzer {
 
     }
 
-    // Adds the passed lexeme into the symbol table.
-    public void addToSymbolTable(String lexeme, State foundState) {
+    // Installs the passed token into the SymbolTable.
+    public void installToken(Token token) {
+        System.out.println(token);
+    }
 
+    // Returns a token based in the passed lexeme and State.
+    public Token generateToken(String lexeme, State foundState) {
+
+        Token generatedToken;
+
+        switch (foundState.getLabel()) {
+            case "B":
+                generatedToken = new Token(lexeme, Token.NATURAL_INTEGER_NUMBER);
+                break;
+            case "C":
+                generatedToken = new Token(lexeme, Token.ZERO);
+                break;
+            case "E":
+                generatedToken = new Token(lexeme, Token.FLOATING_POINT_NUMBER);
+                break;
+            case "F":
+                generatedToken = new Token(lexeme, Token.IDENTIFIER);
+                break;
+            case "H":
+                generatedToken = new Token(lexeme, (int) lexeme.charAt(0));
+                break;
+            case "J":
+                generatedToken = new Token(lexeme, Token.RESERVED_WORD);
+                break;
+            default:
+                throw new Error("State label doesn't match with states in automaton.");
+        }
+
+        return generatedToken;
     }
 }
