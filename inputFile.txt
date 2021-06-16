@@ -1,5 +1,5 @@
-Inicio
-    Real multiple, res;
+Inicios
+    Reales multiple, res;
     Entero numero = 23;
 
     Leer (num);
