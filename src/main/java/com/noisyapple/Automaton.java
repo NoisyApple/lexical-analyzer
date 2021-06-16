@@ -79,10 +79,9 @@ public class Automaton {
                 }
             });
 
-            // Errors.
             if (matchingTransitions.size() == 0) {
-                throw new Error("No matching transitions found.");
-            } else if (matchingTransitions.size() > 1) {
+                currentState = null;
+            } else if (matchingTransitions.size() > 1) { // Error.
                 throw new Error("More than one matching transition was found.");
             }
 
@@ -93,7 +92,11 @@ public class Automaton {
             throw new Error("No transitions found.");
         }
 
+    }
 
+    // Resets automaton to its original state.
+    public void reset() {
+        currentState = initialState;
     }
 
     // Returns the current state of the Automaton.
