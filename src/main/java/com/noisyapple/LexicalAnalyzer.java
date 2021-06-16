@@ -32,6 +32,7 @@ public class LexicalAnalyzer {
     private int indexB;
     private Automaton automaton;
     private SymbolTable symbolTable;
+    private TokenTable tokenTable;
 
     // Class constructor.
     public LexicalAnalyzer(String file) {
@@ -41,6 +42,7 @@ public class LexicalAnalyzer {
         indexB = 0;
 
         symbolTable = new SymbolTable();
+        tokenTable = new TokenTable();
 
         State sA = new State("A", true, false);
         State sB = new State("B", false, true);
@@ -114,15 +116,25 @@ public class LexicalAnalyzer {
 
                     if (automaton.evaluate(lexeme)) {
 
+                        Token validToken;
+
                         if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
                             // Lexical error.
                             System.out.println("'" + lexeme + "' is not valid.");
                         } else if (automaton.getCurrentState()
                                 .getLabel() == LexicalAnalyzer.IDENTIFIER) {
-                            symbolTable.installToken(
-                                    generateToken(lexeme, automaton.getCurrentState()));
+
+                            validToken = generateToken(lexeme, automaton.getCurrentState());
+
+                            symbolTable.installToken(validToken);
+                            tokenTable.addToken(validToken);
+
+                        } else {
+                            validToken = generateToken(lexeme, automaton.getCurrentState());
+                            tokenTable.addToken(validToken);
                         }
+
 
                     } else {
                         // Lexical error.
@@ -174,6 +186,20 @@ public class LexicalAnalyzer {
 
     // Returns a string with the data of the LexicalAnalyzer.
     public String toString() {
-        return symbolTable.toString();
+        String data = "";
+
+        data += "--------------[SYMBOL TABLE]--------------\n";
+        data += symbolTable.toString() + "\n\n";
+
+        data += "-------------[RESERVED WORDS]-------------\n";
+        for (int i = 0; i < RESERVED_WORDS.size(); i++) {
+            data += RESERVED_WORDS.get(i) + "\n";
+        }
+        data += "\n";
+
+        data += "--------------[TOKEN TABLE]---------------\n";
+        data += tokenTable.toString();
+
+        return data;
     }
 }
