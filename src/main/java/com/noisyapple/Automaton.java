@@ -13,13 +13,19 @@ public class Automaton {
     private State currentState;
 
     // Class constructor.
-    public Automaton(ArrayList<State> states, ArrayList<String> alphabet,
-            ArrayList<Transition> transitions) {
+    public Automaton(ArrayList<State> states, ArrayList<Transition> transitions) {
         this.states = states;
-        this.alphabet = alphabet;
         this.transitions = transitions;
 
+        alphabet = new ArrayList<String>();
         finalStates = new ArrayList<State>();
+
+        // Adds regExps found in transitions.
+        transitions.forEach(t -> {
+            if (!alphabet.contains(t.getRegExp())) {
+                alphabet.add(t.getRegExp());
+            }
+        });
 
         ArrayList<State> initialStatesFound = new ArrayList<State>();
 
