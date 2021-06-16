@@ -9,6 +9,7 @@ public class LexicalAnalyzer {
     private int indexA;
     private int indexB;
     private Automaton automaton;
+    private SymbolTable symbolTable;
 
     // Class constructor.
     public LexicalAnalyzer(String file) {
@@ -90,6 +91,9 @@ public class LexicalAnalyzer {
                     if (automaton.evaluate(lexeme)) {
                         System.out.println(
                                 "'" + lexeme + "' found at state: " + automaton.getCurrentState());
+
+                        addToSymbolTable(lexeme, automaton.getCurrentState());
+
                     } else {
                         // Lexical error.
                         System.out.println("'" + lexeme + "' is not valid.");
@@ -104,6 +108,11 @@ public class LexicalAnalyzer {
             }
 
         }
+
+    }
+
+    // Adds the passed lexeme into the symbol table.
+    public void addToSymbolTable(String lexeme, State foundState) {
 
     }
 }
