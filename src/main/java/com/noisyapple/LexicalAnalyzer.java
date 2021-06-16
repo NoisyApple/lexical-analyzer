@@ -46,6 +46,7 @@ public class LexicalAnalyzer {
         tokenTable = new TokenTable();
         errorTable = new ArrayList<String>();
 
+        // States.
         State sA = new State("A", true, false);
         State sB = new State("B", false, true);
         State sC = new State("C", false, true);
@@ -57,6 +58,7 @@ public class LexicalAnalyzer {
         State sI = new State("I", false, false);
         State sJ = new State("J", false, true);
 
+        // Transitions.
         Transition tA_B = new Transition(sA, sB, "[1-9]");
         Transition tA_C = new Transition(sA, sC, "0");
         Transition tA_F = new Transition(sA, sF, "[a-z]");
@@ -75,6 +77,8 @@ public class LexicalAnalyzer {
         Transition tI_J = new Transition(sI, sJ, "[a-z]");
         Transition tJ_J = new Transition(sJ, sJ, "[a-z]");
 
+        // Both states and Transitions are wrapped inside ArrayList to be passed into Automaton
+        // constructor.
         ArrayList<State> states =
                 new ArrayList<State>(Arrays.asList(sA, sB, sC, sD, sE, sF, sG, sH, sI, sJ));
         ArrayList<Transition> transitions =
@@ -87,44 +91,67 @@ public class LexicalAnalyzer {
     // Checking wether the content of the file matches the automaton's lexical units.
     public void startAnalysis() {
 
+        // Iterates while indexB is less or equal than the size of the data.
         while (indexB <= file.length()) {
 
             if (indexB != file.length()) {
+                // Whenever a character is found it is passed into the automaton.
                 automaton.insertInput(file.charAt(indexB));
             } else {
+                // A null current state is forced into the automaton so it stops reading the last
+                // lexeme.
                 automaton.insertInput('!');
-
             }
 
+            // Whenever the current state of the automaton is null.
+            // This happens when a the automaton doesn't find a matching transition for the given
+            // value.
             if (automaton.getCurrentState() == null) {
+
+                // When both indexes are in the same position.
                 if (indexA == indexB) {
 
                     // Lexical error.
                     if (indexB < file.length()) {
+
+                        // Spaces and newline characters are excluded.
                         if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
                             errorTable.add("'" + file.charAt(indexB) + "' is not valid.");
                         }
                     }
 
+                    // Indexes move to next character.
                     indexA += 1;
                     indexB += 1;
 
                 } else { // Lexeme found.
+
                     String lexeme = "";
 
+                    // A string is built based on the position of both indexes.
                     for (int i = indexA; i < indexB; i++) {
                         lexeme += file.charAt(i);
                     }
 
+                    // The lexeme is evaluated through the automaton. If lexeme is valid the
+                    // execution will enter into the if bellow.
                     if (automaton.evaluate(lexeme)) {
 
                         Token validToken;
 
+                        // In order to consider a lexeme a reserved word the current state should be
+                        // the specified and the lexeme should be declared within the RESERVED_WORDS
+                        // constant.
                         if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
-                            // Lexical error.
+
+                            // Otherwise, a lexical error is generated.
                             errorTable.add("'" + lexeme + "' is not valid.");
 
+                            // If the current state after the lexeme is evaluated is the specified
+                            // here, a token will be generated and will be considered as an
+                            // identifier, therefore it will be added into both the symbol table and
+                            // the token table.
                         } else if (automaton.getCurrentState()
                                 .getLabel() == LexicalAnalyzer.IDENTIFIER) {
 
@@ -133,22 +160,31 @@ public class LexicalAnalyzer {
                             symbolTable.installToken(validToken);
                             tokenTable.addToken(validToken);
 
+                            // If not the token is still generated but only added into the token
+                            // table.
                         } else {
                             validToken = generateToken(lexeme, automaton.getCurrentState());
                             tokenTable.addToken(validToken);
                         }
 
-
+                        // If the lexeme is not valid through the automaton.
                     } else {
+
                         // Lexical error.
                         errorTable.add("'" + lexeme + "' is not valid.");
                     }
 
+                    // After a lexeme being found indexA is set into the place of indexB.
                     indexA = indexB;
                 }
 
+                // The automaton is reset on either case.
                 automaton.reset();
+
+                // If the current state is not null.
             } else {
+
+                // IndexB keeps going.
                 indexB += 1;
             }
 
@@ -161,6 +197,7 @@ public class LexicalAnalyzer {
 
         Token generatedToken;
 
+        // Lexemes found are categorized based on the state where they were found.
         switch (foundState.getLabel()) {
             case LexicalAnalyzer.NATURAL_INTEGER_NUMBER:
                 generatedToken = new Token(lexeme, Token.NATURAL_INTEGER_NUMBER);
@@ -175,12 +212,15 @@ public class LexicalAnalyzer {
                 generatedToken = new Token(lexeme, Token.IDENTIFIER);
                 break;
             case LexicalAnalyzer.SINGLE_CHARACTER:
+                // Ascii value is set as token's attribute.
                 generatedToken = new Token(lexeme, (int) lexeme.charAt(0));
                 break;
             case LexicalAnalyzer.RESERVED_WORD:
+                // The actual lexeme is needed in order to determine its attribute.
                 generatedToken = new Token(lexeme, Token.RESERVED_WORDS.get(lexeme));
                 break;
             default:
+                // When a non-managed state is passed.
                 throw new Error("State label doesn't match with states in automaton.");
         }
 
@@ -198,7 +238,7 @@ public class LexicalAnalyzer {
         for (int i = 0; i < RESERVED_WORDS.size(); i++) {
             data += RESERVED_WORDS.get(i) + "\n";
         }
-        data += "\n";
+        data += "\n\n";
 
         data += "--------------[TOKEN TABLE]---------------\n";
         data += tokenTable.toString() + "\n\n";
