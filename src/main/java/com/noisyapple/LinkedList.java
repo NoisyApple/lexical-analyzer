@@ -12,6 +12,11 @@ public class LinkedList<T> {
         this.size = 0;
     }
 
+    // Tells whether the linked list is empty or not.
+    public boolean isEmpty() {
+        return this.head == null;
+    }
+
     // Adds a node with the given value at the head of the list.
     public void add(T value) {
 
@@ -72,44 +77,50 @@ public class LinkedList<T> {
 
     // Removes the node found in the given index.
     public void remove(int index) {
-        Node<T> foundNode = head;
-        int innerIndex = size - 1;
+        if (size > 0) {
+            Node<T> foundNode = head;
+            int innerIndex = size - 1;
 
-        if (index >= 0 && index < size) {
-            while (innerIndex != index) {
-                foundNode = foundNode.getNextNode();
+            if (index >= 0 && index < size) {
+                while (innerIndex != index) {
+                    foundNode = foundNode.getNextNode();
 
-                innerIndex--;
+                    innerIndex--;
+                }
+            } else {
+                throw new Error("Index out of bounds");
             }
-        } else {
-            throw new Error("Index out of bounds");
+
+            if (foundNode == head) {
+                removeLast();
+                return;
+            }
+
+            Node<T> previousNode = getNode(index + 1);
+
+            if (foundNode.getNextNode() != null) {
+                previousNode.setNextNode(foundNode.getNextNode());
+            } else {
+                previousNode.setNextNode(null);
+            }
+
+            size--;
         }
-
-        if (foundNode == head) {
-            removeLast();
-            return;
-        }
-
-        Node<T> previousNode = getNode(index + 1);
-
-        if (foundNode.getNextNode() != null) {
-            previousNode.setNextNode(foundNode.getNextNode());
-        } else {
-            previousNode.setNextNode(null);
-        }
-
-        size--;
     }
 
     // Removes the last node.
     public void removeLast() {
-        head = head.getNextNode();
-        size--;
+        if (size > 0) {
+            head = head.getNextNode();
+            size--;
+        }
     }
 
     // Removes the first node.
     public void removeFirst() {
-        remove(0);
+        if (size > 0) {
+            remove(0);
+        }
     }
 
 

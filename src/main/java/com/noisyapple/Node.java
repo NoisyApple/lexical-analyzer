@@ -1,10 +1,12 @@
 package com.noisyapple;
 
+// Models a node.
 public class Node<T> {
 
     private T data;
     private Node<T> nextNode;
 
+    // Class constructor.
     public Node(T data) {
         this.data = data;
         this.nextNode = null;
