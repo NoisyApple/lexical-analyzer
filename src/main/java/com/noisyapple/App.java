@@ -24,16 +24,46 @@ public class App {
 
             String grammarData = "";
 
+            grammarData += "------------------[FILE]-------------------\n";
+            grammarData += grammarFile + "\n\n";
+
             grammarData += "--------------[NON TERMINALS]--------------\n";
-            grammarData += Arrays.toString(nonTerminalSymbols) + "\n\n";
+            for (String s : nonTerminalSymbols)
+                grammarData += s + "\n";
 
-            grammarData += "----------------[TERMINALS]----------------\n";
-            grammarData += Arrays.toString(terminalSymbols) + "\n\n";
+            grammarData += "\n\n----------------[TERMINALS]----------------\n";
+            for (String s : terminalSymbols)
+                grammarData += s + "\n";
 
-            grammarData += "---------------[RIGHT SIDES]---------------\n";
-            grammarData += Arrays.toString(rulesRightSides);
+            grammarData += "\n\n---------------[RIGHT SIDES]---------------\n";
+            for (String s : rulesRightSides)
+                grammarData += s + "\n";
 
-            System.out.println(grammarData);
+            System.out.println("\n\n" + grammarData);
+
+            Stack<String> stringsStack = new Stack<String>();
+
+            System.out.println(stringsStack.size()); // 0
+
+            System.out.println(stringsStack.isEmpty()); // true
+
+            stringsStack.push("A"); // ["A"]
+            stringsStack.push("B"); // ["A", "B"]
+            stringsStack.push("C"); // ["A", "B", "C"]
+
+            System.out.println(stringsStack); // ["A", "B", "C"]
+
+            System.out.println(stringsStack.pop()); // "C"
+
+            System.out.println(stringsStack); // ["A", "B"];
+
+            System.out.println(stringsStack.peek()); // "B"
+
+            System.out.println(stringsStack); // ["A", "B"];
+
+            System.out.println(stringsStack.size()); // 2
+
+            System.out.println(stringsStack.isEmpty()); // false
 
         } else {
             throw new Error("No input files paths specified.");
