@@ -73,6 +73,7 @@ public class Token {
     // GETTERS ---
 
     // Returns a String with the data of the token.
+    @Override
     public String toString() {
         return "[" + lexeme + ", " + classification + ", " + attribute + "]";
     }

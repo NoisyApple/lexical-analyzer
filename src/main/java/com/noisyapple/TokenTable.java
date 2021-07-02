@@ -18,6 +18,7 @@ public class TokenTable {
     }
 
     // Returns a String with the data of the table.
+    @Override
     public String toString() {
         String data = "[[LEXEME], [CLASSIFICATION], [ATTRIBUTE]]\n";
 

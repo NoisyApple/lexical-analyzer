@@ -125,6 +125,7 @@ public class LinkedList<T> {
 
 
     // Returns the string representation of the list.
+    @Override
     public String toString() {
         String data = "";
 
@@ -133,6 +134,44 @@ public class LinkedList<T> {
         }
 
         return "[" + data + "]";
+
+    }
+
+    // Inner node class.
+    class Node<E> {
+
+        private E data;
+        private Node<E> nextNode;
+
+        // Class constructor.
+        public Node(E data) {
+            this.data = data;
+            this.nextNode = null;
+        }
+
+        // GETTERS +++
+
+        public E getData() {
+            return this.data;
+        }
+
+        public Node<E> getNextNode() {
+            return this.nextNode;
+        }
+
+        // GETTERS ---
+
+        // SETTERS +++
+
+        public void setData(E data) {
+            this.data = data;
+        }
+
+        public void setNextNode(Node<E> nextNode) {
+            this.nextNode = nextNode;
+        }
+
+        // SETTERS ---
 
     }
 

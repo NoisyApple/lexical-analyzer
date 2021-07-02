@@ -30,6 +30,7 @@ public class State {
     // GETTERS ---
 
     // Returns a string with the data of the State.
+    @Override
     public String toString() {
         String data = "";
 
