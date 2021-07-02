@@ -6,9 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 // Models a set of terminal symbols, each of them with a specified production rule index.
-class TerminalSymbolSet implements Iterable<TerminalSymbol> {
+class ParsingTableSet implements Iterable<TerminalSymbol> {
 
-    private int pointer;
     private List<TerminalSymbol> data = new ArrayList<TerminalSymbol>();
 
     // Adds the passed data into the set only if the symbol doesn't exists within the set.
@@ -48,7 +47,12 @@ class TerminalSymbolSet implements Iterable<TerminalSymbol> {
         return false;
     }
 
-    // Executes the given lambda expression for each element in the set.
+    // Executes an union operation with the given set.
+    public void union(ParsingTableSet set) {
+        set.forEach(e -> {
+            add(e.getSymbol(), e.getRuleIndex());
+        });
+    }
 
     // Sorts the set.
     private void sort() {
@@ -63,24 +67,7 @@ class TerminalSymbolSet implements Iterable<TerminalSymbol> {
 
     @Override
     public Iterator<TerminalSymbol> iterator() {
-
-        int size = data.size();
-
-        Iterator<TerminalSymbol> t = new Iterator<TerminalSymbol>() {
-
-            @Override
-            public boolean hasNext() {
-                return pointer < size;
-            }
-
-            @Override
-            public TerminalSymbol next() {
-                return data.get(pointer++);
-            }
-
-        };
-
-        return t;
+        return data.iterator();
     }
 
     // Returns a stringified representation of the data.
