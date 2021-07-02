@@ -43,6 +43,7 @@ public class Stack<T> {
     }
 
     // Returns a string representation of the stack.
+    @Override
     public String toString() {
         return list.toString();
     }

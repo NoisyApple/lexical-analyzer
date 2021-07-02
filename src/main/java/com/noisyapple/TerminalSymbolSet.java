@@ -84,13 +84,12 @@ class TerminalSymbolSet implements Iterable<TerminalSymbol> {
     }
 
     // Returns a stringified representation of the data.
+    @Override
     public String toString() {
         String stringifiedData = data.toString();
 
         return "{" + stringifiedData.substring(1, stringifiedData.length() - 1) + "}";
     }
-
-
 
 }
 
@@ -130,6 +129,7 @@ class TerminalSymbol {
 
     // SETTERS ---
 
+    @Override
     public String toString() {
         return "\"" + symbol + "\" => [" + ruleIndex + "]";
     }

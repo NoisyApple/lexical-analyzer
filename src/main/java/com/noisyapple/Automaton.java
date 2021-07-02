@@ -124,6 +124,7 @@ public class Automaton {
     }
 
     // Returns a string with the characteristics of the Automaton.
+    @Override
     public String toString() {
         String data = "";
 

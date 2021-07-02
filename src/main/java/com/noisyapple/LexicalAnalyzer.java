@@ -228,6 +228,7 @@ public class LexicalAnalyzer {
     }
 
     // Returns a string with the data of the LexicalAnalyzer.
+    @Override
     public String toString() {
         String data = "";
 

@@ -31,6 +31,7 @@ public class Transition {
     // GETTERS ---
 
     // Returns a string with the data of the Transition.
+    @Override
     public String toString() {
         return "(" + originState + ", " + regExp + ", " + destinationState + ")";
     }

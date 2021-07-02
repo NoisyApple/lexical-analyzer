@@ -125,6 +125,7 @@ public class LinkedList<T> {
 
 
     // Returns the string representation of the list.
+    @Override
     public String toString() {
         String data = "";
 

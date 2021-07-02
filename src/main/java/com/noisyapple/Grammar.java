@@ -52,6 +52,7 @@ public class Grammar {
 
     }
 
+    @Override
     public String toString() {
         String grammarData = "";
 
