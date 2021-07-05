@@ -26,29 +26,27 @@ public class Token {
                     put("Fin", 306);
                 }
             };
-
-    // Classifications constant.
     private final Hashtable<Integer, String> CLASSIFICATIONS = new Hashtable<Integer, String>() {
         {
-            put(40, "Open parenthesis");
-            put(41, "Close parenthesis");
-            put(43, "Plus sign");
-            put(44, "Comma");
-            put(45, "Minus sign");
-            put(47, "Slash");
-            put(59, "Semi colon");
-            put(61, "Equals sign");
-            put(295, "Identifier");
-            put(296, "Natural integer number");
-            put(297, "Zero");
-            put(298, "Floating point number");
-            put(300, "Reserved word");
-            put(301, "Reserved word");
-            put(302, "Reserved word");
-            put(303, "Reserved word");
-            put(304, "Reserved word");
-            put(305, "Reserved word");
-            put(306, "Reserved word");
+            put(40, "(");
+            put(41, ")");
+            put(43, "+");
+            put(44, ",");
+            put(45, "-");
+            put(47, "/");
+            put(59, ";");
+            put(61, "=");
+            put(295, "id");
+            put(296, "intliteral");
+            put(297, "realliteral");
+            put(298, "realliteral");
+            put(300, "Programa");
+            put(301, "Real");
+            put(302, "Entero");
+            put(303, "Leer");
+            put(304, "Escribir");
+            put(305, "Inicio");
+            put(306, "Fin");
         }
     };
 
@@ -68,6 +66,10 @@ public class Token {
 
     public String getLexeme() {
         return lexeme;
+    }
+
+    public String getClassification() {
+        return classification;
     }
 
     // GETTERS ---

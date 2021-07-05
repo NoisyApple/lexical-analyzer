@@ -62,6 +62,9 @@ public class LinkedList<T> {
 
     // Returns the last value of the list.
     public T getLast() {
+        if (head == null) {
+            return null;
+        }
         return head.getData();
     }
 

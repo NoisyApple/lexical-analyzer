@@ -1,0 +1,7 @@
+Programa
+
+Inicio
+
+    a = 10;
+
+Fin

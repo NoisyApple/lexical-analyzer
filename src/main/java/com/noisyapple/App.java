@@ -10,16 +10,15 @@ public class App {
             String grammarFile = Utils.fileToString(args[1]);
 
             LexicalAnalyzer lA = new LexicalAnalyzer(codeFile);
-
-            lA.startAnalysis();
-            // System.out.println(lA);
-
             Grammar g = new Grammar(grammarFile);
+            Parser p = new Parser(g, lA);
 
-            // System.out.println(g);
-
-
+            System.out.println(g);
             System.out.println(g.getParsingTable().toString());
+
+            p.parse();
+
+            System.out.println(lA);
 
         } else {
             throw new Error("No input files paths specified.");

@@ -251,6 +251,38 @@ public class Grammar {
 
     }
 
+    public String[] getRightSideArrayByIndex(int index) {
+
+        String[] rightSideArray = rulesRightSides[index].split(" ");
+
+        if (Arrays.asList(rightSideArray).contains(EPSILON))
+            return new String[] {};
+
+        return rightSideArray;
+    }
+
+    public int getParsingTableValue(String nonTerminalSymbol, String terminalSymbol) {
+
+        int row = Arrays.asList(nonTerminalSymbols).indexOf(nonTerminalSymbol);
+        int column = Arrays.asList(terminalSymbols).indexOf(terminalSymbol);
+
+        return parsingTable.getTable()[row][column];
+    }
+
+    public boolean isNonTerminal(String symbol) {
+        return Arrays.asList(nonTerminalSymbols).contains(symbol);
+    }
+
+    public boolean isTerminal(String symbol) {
+        return Arrays.asList(terminalSymbols).contains(symbol);
+    }
+
+    // GETTERS +++
+
+    public String[] getProductionRules() {
+        return productionRules;
+    }
+
     public String[] getNonTerminalSymbols() {
         return nonTerminalSymbols;
     }
@@ -267,15 +299,18 @@ public class Grammar {
         return parsingTable;
     }
 
+    // GETTERS ---
+
+
     @Override
     public String toString() {
         String grammarData = "";
 
-        grammarData += "------------[PRODUCTION RULES]-------------\n";
-        for (String s : productionRules)
-            grammarData += s + "\n";
+        // grammarData += "------------[PRODUCTION RULES]-------------\n";
+        // for (String s : productionRules)
+        // grammarData += s + "\n";
 
-        grammarData += "\n\n--------------[NON TERMINALS]--------------\n";
+        grammarData += "--------------[NON TERMINALS]--------------\n";
         for (String s : nonTerminalSymbols)
             grammarData += s + "\n";
 
@@ -283,16 +318,13 @@ public class Grammar {
         for (String s : terminalSymbols)
             grammarData += s + "\n";
 
-        grammarData += "\n\n---------------[LEFT SIDES]--------------\n";
-        for (String s : rulesLeftSides)
-            grammarData += s + "\n";
+        // grammarData += "\n\n---------------[LEFT SIDES]--------------\n";
+        // for (String s : rulesLeftSides)
+        // grammarData += s + "\n";
 
         grammarData += "\n\n---------------[RIGHT SIDES]---------------\n";
         for (String s : rulesRightSides)
             grammarData += s + "\n";
-
-        System.out.println("Hey There!");
-
 
         return "\n\n" + grammarData;
     }
