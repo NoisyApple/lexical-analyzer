@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class ParsingTable {
 
+    public static final int EMPTY = -1;
+
     private int[][] table;
     private String[] terminalSymbols;
     private String[] nonTerminalSymbols;
@@ -55,7 +57,7 @@ public class ParsingTable {
             stringifiedTable += "\u2503";
 
             for (int j = 0; j < row.length; j++) {
-                stringifiedTable += ((row[j] != -1) ? row[j] : "") + "\t"
+                stringifiedTable += ((row[j] != EMPTY) ? row[j] : "") + "\t"
                         + ((j != row.length - 1) ? "\u2503" : "\n");
             }
 
