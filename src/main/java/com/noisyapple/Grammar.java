@@ -251,6 +251,28 @@ public class Grammar {
 
     }
 
+    public String[] getRightSideArrayByIndex(int index) {
+        return rulesRightSides[index].split(" ");
+    }
+
+    public int getParsingTableValue(String nonTerminalSymbol, String terminalSymbol) {
+
+        int row = Arrays.asList(nonTerminalSymbols).indexOf(nonTerminalSymbol);
+        int column = Arrays.asList(terminalSymbols).indexOf(terminalSymbol);
+
+        return parsingTable.getTable()[row][column];
+    }
+
+    public boolean isNonTerminal(String symbol) {
+        return Arrays.asList(nonTerminalSymbols).contains(symbol);
+    }
+
+    public boolean isTerminal(String symbol) {
+        return Arrays.asList(terminalSymbols).contains(symbol);
+    }
+
+    // GETTERS +++
+
     public String[] getNonTerminalSymbols() {
         return nonTerminalSymbols;
     }
@@ -266,6 +288,9 @@ public class Grammar {
     public ParsingTable getParsingTable() {
         return parsingTable;
     }
+
+    // GETTERS ---
+
 
     @Override
     public String toString() {
