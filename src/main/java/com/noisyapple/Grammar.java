@@ -15,6 +15,7 @@ public class Grammar {
     private String[] terminalSymbols;
     private String[] rulesLeftSides;
     private String[] rulesRightSides;
+    private ParsingTable parsingTable;
 
     // Class constructor.
     public Grammar(String grammar) {
@@ -57,6 +58,8 @@ public class Grammar {
         this.terminalSymbols = terminalSymbols.toArray(new String[0]);
         this.rulesLeftSides = rulesLeftSides.toArray(new String[0]);
         this.rulesRightSides = rulesRightSides.toArray(new String[0]);
+        this.parsingTable = new ParsingTable(calculateParsingTable(), this.terminalSymbols,
+                this.nonTerminalSymbols);
 
         // Filters all non terminal symbols which are not in any of the right sides.
         String[] startSymbols = Arrays.stream(this.nonTerminalSymbols).filter(nT -> {
@@ -77,11 +80,43 @@ public class Grammar {
 
     }
 
-    public void getParsingTable() {
+    private int[][] calculateParsingTable() {
 
-        Arrays.stream(nonTerminalSymbols).forEach(e -> {
-            System.out.println(e + " -> " + getFollowSet(e));
-        });
+        int[][] parsingTable = new int[nonTerminalSymbols.length][terminalSymbols.length];
+
+        // All cells are set to -1.
+        for (int i = 0; i < parsingTable.length; i++) {
+            for (int j = 0; j < parsingTable[i].length; j++) {
+                parsingTable[i][j] = -1;
+            }
+        }
+
+        for (String nT : nonTerminalSymbols) {
+            int nTIndex = Arrays.asList(nonTerminalSymbols).indexOf(nT);
+
+            ParsingTableSet firstSet = getFirstSet(nT);
+
+            firstSet.forEach(eFirst -> {
+                if (!eFirst.getSymbol().equals(EPSILON)) {
+                    int tIndex = Arrays.asList(terminalSymbols).indexOf(eFirst.getSymbol());
+
+                    parsingTable[nTIndex][tIndex] = eFirst.getRuleIndex();
+                } else {
+
+                    ParsingTableSet followSet = getFollowSet(nT);
+
+                    followSet.forEach(eFollow -> {
+                        int tIndex = Arrays.asList(terminalSymbols).indexOf(eFollow.getSymbol());
+
+                        parsingTable[nTIndex][tIndex] = eFirst.getRuleIndex();
+
+                    });
+
+                }
+            });
+        }
+
+        return parsingTable;
 
     }
 
@@ -152,7 +187,6 @@ public class Grammar {
     private ParsingTableSet getFollowSet(String symbol) {
 
         ParsingTableSet followSet = new ParsingTableSet();
-        // List<Integer> leftSideOccurrences = new ArrayList<Integer>();
         List<Integer> rightSideOccurrences = new ArrayList<Integer>();
 
         if (symbol.equals(startSymbol)) { // TYPE 1.
@@ -160,20 +194,10 @@ public class Grammar {
             return followSet;
         }
 
-        // for (int i = 0; i < rulesLeftSides.length; i++) {
-        // if (rulesLeftSides[i].equals(symbol))
-        // leftSideOccurrences.add(i);
-        // }
-
         for (int i = 0; i < rulesRightSides.length; i++) {
             if (Arrays.asList(rulesRightSides[i].split(" ")).contains(symbol))
                 rightSideOccurrences.add(i);
         }
-
-        // leftSideOccurrences.forEach(ruleIndex -> {
-        // followSet.union(getFollowSet(symbol, leftSideOccurrences.toArray(new String[0]),
-        // rightSideOccurrences.toArray(new String[0])));
-        // });
 
         rightSideOccurrences.forEach(ruleIndex -> {
             followSet.union(getFollowSet(symbol, ruleIndex));
@@ -187,12 +211,6 @@ public class Grammar {
         ParsingTableSet followSet = new ParsingTableSet();
 
         String[] rightSideSymbols = rulesRightSides[ruleIndex].split(" ");
-
-        // // A -> aB where A = symbol
-        // for(int i = 0; i < leftOccurrences.length; i++){
-
-        // }
-
 
         for (int i = 0; i < rightSideSymbols.length; i++) {
 
@@ -229,29 +247,24 @@ public class Grammar {
             }
         }
 
-
-        // boolean hasAtLeastOneNonTerminal = Arrays.stream(rightSide).filter(symbol -> {
-        // return Arrays.asList(nonTerminalSymbols).contains(symbol);
-        // }).count() > 0;
-
-        // if (hasAtLeastOneNonTerminal) {
-
-        // for (int i = 0; i < rightSide.length; i++) {
-        // String symbol = rightSide[i];
-
-        // if (Arrays.asList(nonTerminalSymbols).contains(symbol)) {
-        // if (i == rightSide.length - 1) { // A -> aB
-        // followSet.union(getFollowSet(symbol));
-        // } else { // A -> aBb
-
-        // }
-        // }
-        // }
-
-        // }
-
         return followSet;
 
+    }
+
+    public String[] getNonTerminalSymbols() {
+        return nonTerminalSymbols;
+    }
+
+    public String[] getTerminalSymbols() {
+        return terminalSymbols;
+    }
+
+    public String getStartSymbol() {
+        return startSymbol;
+    }
+
+    public ParsingTable getParsingTable() {
+        return parsingTable;
     }
 
     @Override

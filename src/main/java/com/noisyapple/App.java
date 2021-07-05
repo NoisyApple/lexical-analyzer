@@ -19,7 +19,7 @@ public class App {
             // System.out.println(g);
 
 
-            g.getParsingTable();
+            System.out.println(g.getParsingTable().toString());
 
         } else {
             throw new Error("No input files paths specified.");

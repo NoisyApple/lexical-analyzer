@@ -5,8 +5,8 @@ stmtf -> stmt stmtf
 stmtf -> ε
 stmt -> tipo idlist ;
 stmt -> id = expression ;
-stmt -> Leer ( idlist );
-stmt -> Escribir ( expression );
+stmt -> Leer ( idlist ) ;
+stmt -> Escribir ( expression ) ;
 idlist -> id idfinal
 idfinal -> , id idfinal
 idfinal -> ε
