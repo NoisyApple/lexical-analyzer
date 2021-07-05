@@ -279,6 +279,10 @@ public class Grammar {
 
     // GETTERS +++
 
+    public String[] getProductionRules() {
+        return productionRules;
+    }
+
     public String[] getNonTerminalSymbols() {
         return nonTerminalSymbols;
     }
