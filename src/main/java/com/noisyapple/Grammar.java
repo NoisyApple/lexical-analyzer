@@ -252,7 +252,13 @@ public class Grammar {
     }
 
     public String[] getRightSideArrayByIndex(int index) {
-        return rulesRightSides[index].split(" ");
+
+        String[] rightSideArray = rulesRightSides[index].split(" ");
+
+        if (Arrays.asList(rightSideArray).contains(EPSILON))
+            return new String[] {};
+
+        return rightSideArray;
     }
 
     public int getParsingTableValue(String nonTerminalSymbol, String terminalSymbol) {

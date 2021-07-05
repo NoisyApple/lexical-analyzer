@@ -89,10 +89,14 @@ public class LexicalAnalyzer {
     }
 
     // Checking wether the content of the file matches the automaton's lexical units.
-    public void startAnalysis() {
+    public Token getNextToken() {
+
+        Token token = null;
+        boolean tokenFound = false;
+
 
         // Iterates while indexB is less or equal than the size of the data.
-        while (indexB <= file.length()) {
+        while (indexB <= file.length() && !tokenFound) {
 
             if (indexB != file.length()) {
                 // Whenever a character is found it is passed into the automaton.
@@ -114,9 +118,14 @@ public class LexicalAnalyzer {
                     // Lexical error.
                     if (indexB < file.length()) {
 
+
+
                         // Spaces and newline characters are excluded.
                         if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
-                            errorTable.add("'" + file.charAt(indexB) + "' is not valid.");
+
+                            throw new Error(
+                                    "Lexical error: '" + file.charAt(indexB) + "' is not valid.");
+                            // errorTable.add("'" + file.charAt(indexB) + "' is not valid.");
                         }
                     }
 
@@ -137,16 +146,17 @@ public class LexicalAnalyzer {
                     // execution will enter into the if bellow.
                     if (automaton.evaluate(lexeme)) {
 
-                        Token validToken;
-
                         // In order to consider a lexeme a reserved word the current state should be
                         // the specified and the lexeme should be declared within the RESERVED_WORDS
                         // constant.
                         if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
 
+                            throw new Error("Lexical error: '" + lexeme + "' is not valid.");
+
+
                             // Otherwise, a lexical error is generated.
-                            errorTable.add("'" + lexeme + "' is not valid.");
+                            // errorTable.add("'" + lexeme + "' is not valid.");
 
                             // If the current state after the lexeme is evaluated is the specified
                             // here, a token will be generated and will be considered as an
@@ -155,23 +165,31 @@ public class LexicalAnalyzer {
                         } else if (automaton.getCurrentState()
                                 .getLabel() == LexicalAnalyzer.IDENTIFIER) {
 
-                            validToken = generateToken(lexeme, automaton.getCurrentState());
+                            token = generateToken(lexeme, automaton.getCurrentState());
 
-                            symbolTable.installToken(validToken);
-                            tokenTable.addToken(validToken);
+                            symbolTable.installToken(token);
+                            tokenTable.addToken(token);
+
+                            tokenFound = true;
 
                             // If not the token is still generated but only added into the token
                             // table.
                         } else {
-                            validToken = generateToken(lexeme, automaton.getCurrentState());
-                            tokenTable.addToken(validToken);
+                            token = generateToken(lexeme, automaton.getCurrentState());
+                            tokenTable.addToken(token);
+
+                            tokenFound = true;
                         }
 
                         // If the lexeme is not valid through the automaton.
                     } else {
 
+                        throw new Error("Lexical error: '" + lexeme + "' is not valid.");
+
+
+
                         // Lexical error.
-                        errorTable.add("'" + lexeme + "' is not valid.");
+                        // errorTable.add("'" + lexeme + "' is not valid.");
                     }
 
                     // After a lexeme being found indexA is set into the place of indexB.
@@ -189,6 +207,8 @@ public class LexicalAnalyzer {
             }
 
         }
+
+        return token;
 
     }
 

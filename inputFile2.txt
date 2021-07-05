@@ -1,13 +1,19 @@
+Programa
+
 Inicio
-    Entero n_1 = 120;
-    Real r_2 = 0.00012;
-    Entero cuenta_12r = 15320;
+    Entero n_1, cuenta_12r;
+    Real r_2, op, res;
+
+    n_1 = 120;
+    r_2 = 0.00012;
+
+    cuenta_12r = 15320;
 
     Leer (n_1);
 
-    Real op = 2023.25 + (n_1 - r_2);
+    op = 2023.25 + (n_1 - r_2);
     n_1 = op / 123.99;
-    Real res = cuenta - n_1;
+    res = cuenta - n_1;
 
     Escribir(res);
 Fin

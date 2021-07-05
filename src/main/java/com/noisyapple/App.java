@@ -11,15 +11,22 @@ public class App {
 
             LexicalAnalyzer lA = new LexicalAnalyzer(codeFile);
 
-            lA.startAnalysis();
+            // lA.startAnalysis();
             // System.out.println(lA);
 
             Grammar g = new Grammar(grammarFile);
 
-            // System.out.println(g);
+            System.out.println(g.isNonTerminal("program"));
+
+            Parser p = new Parser(g, lA);
 
 
-            System.out.println(g.getParsingTable().toString());
+            p.parse();
+
+            // // System.out.println(g);
+
+
+            // System.out.println(g.getParsingTable().toString());
 
         } else {
             throw new Error("No input files paths specified.");

@@ -13,55 +13,76 @@ public class Parser {
         this.lexicalAnalyzer = lexicalAnalyzer;
     }
 
-    // public void parse(String input) {
+    public void parse() {
 
-    //     String currentSymbol; // x
-    //     String currentToken; // a
+        String currentSymbol; // x
+        Token currentToken; // a
 
-    //     symbolStack.push(grammar.getStartSymbol()); // Start symbol is added to the stack.
+        symbolStack.push(grammar.getStartSymbol()); // Start symbol is added to the stack.
+        System.out.println(grammar.getStartSymbol());
 
-    //     // currentSymbol be always attached to the value of the stack peek.
-    //     currentSymbol = symbolStack.peek();
-    //     currentToken = lexicalAnalyzer.nextToken();
 
-    //     // Parsing loop.
-    //     while (!symbolStack.isEmpty()) {
+        // currentSymbol be always attached to the value of the stack peek.
+        currentSymbol = symbolStack.peek();
+        currentToken = lexicalAnalyzer.getNextToken();
 
-    //         if (grammar.isNonTerminal(currentSymbol)) {
+        System.out.println(symbolStack);
+        System.out.println();
 
-    //             int parsingTableValue = grammar.getParsingTableValue(currentSymbol, currentToken);
+        // Parsing loop.
+        while (!symbolStack.isEmpty()) {
 
-    //             if (parsingTableValue != ParsingTable.EMPTY) {
+            System.out.println(symbolStack);
+            System.out.println(currentSymbol);
+            System.out
+                    .println(currentToken.getLexeme() + " ::: " + currentToken.getClassification());
+            System.out.println();
 
-    //                 String[] rightSide = grammar.getRightSideArrayByIndex(parsingTableValue);
 
-    //                 symbolStack.pop();
 
-    //                 for (String s : rightSide) {
-    //                     symbolStack.push(s);
-    //                 }
+            if (grammar.isNonTerminal(currentSymbol)) {
 
-    //                 // After for loop currentSymbol should be pointing to stack peek.
+                System.out.println(currentSymbol + " <=> " + currentToken.getClassification());
+                int parsingTableValue = grammar.getParsingTableValue(currentSymbol,
+                        currentToken.getClassification());
 
-    //             } else {
-    //                 throw new Error("Syntax error found!");
-    //             }
+                if (parsingTableValue != ParsingTable.EMPTY) {
 
-    //         } else if (grammar.isTerminal(currentSymbol)) {
+                    String[] rightSide = grammar.getRightSideArrayByIndex(parsingTableValue);
 
-    //             if (currentSymbol.equals(currentToken)) {
-    //                 symbolStack.pop(); // currentSymbol is updated.
-    //                 currentToken = nextToken();
-    //             } else {
-    //                 throw new Error("Syntax error found!");
-    //             }
+                    symbolStack.pop();
 
-    //         } else { // currentSymbol is neither terminal nor terminal.
-    //             throw new Error("Syntax error found!");
-    //         }
+                    for (int i = rightSide.length - 1; i >= 0; i--) {
+                        symbolStack.push(rightSide[i]);
+                    }
 
-    //     }
+                    currentSymbol = symbolStack.peek();
 
-    // }
+
+                } else {
+                    throw new Error("Syntax error found!");
+                }
+
+            } else if (grammar.isTerminal(currentSymbol)) {
+
+                if (currentSymbol.equals(currentToken.getClassification())) {
+                    symbolStack.pop();
+                    currentSymbol = symbolStack.peek();
+                    currentToken = lexicalAnalyzer.getNextToken();
+                } else {
+                    throw new Error("Syntax error found!");
+                }
+
+            } else { // currentSymbol is neither terminal nor terminal.
+                throw new Error("Syntax error found!");
+            }
+
+        }
+
+        System.out.println("Empty stack");
+        System.out.println(symbolStack);
+
+
+    }
 
 }
