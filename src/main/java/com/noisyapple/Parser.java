@@ -83,7 +83,7 @@ public class Parser {
         System.out.println();
         System.out.println(symbolStack);
         System.out.println("DONE!");
-
+        System.out.println();
 
     }
 

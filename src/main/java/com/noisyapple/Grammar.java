@@ -306,11 +306,11 @@ public class Grammar {
     public String toString() {
         String grammarData = "";
 
-        grammarData += "------------[PRODUCTION RULES]-------------\n";
-        for (String s : productionRules)
-            grammarData += s + "\n";
+        // grammarData += "------------[PRODUCTION RULES]-------------\n";
+        // for (String s : productionRules)
+        // grammarData += s + "\n";
 
-        grammarData += "\n\n--------------[NON TERMINALS]--------------\n";
+        grammarData += "--------------[NON TERMINALS]--------------\n";
         for (String s : nonTerminalSymbols)
             grammarData += s + "\n";
 
@@ -318,16 +318,13 @@ public class Grammar {
         for (String s : terminalSymbols)
             grammarData += s + "\n";
 
-        grammarData += "\n\n---------------[LEFT SIDES]--------------\n";
-        for (String s : rulesLeftSides)
-            grammarData += s + "\n";
+        // grammarData += "\n\n---------------[LEFT SIDES]--------------\n";
+        // for (String s : rulesLeftSides)
+        // grammarData += s + "\n";
 
         grammarData += "\n\n---------------[RIGHT SIDES]---------------\n";
         for (String s : rulesRightSides)
             grammarData += s + "\n";
-
-        System.out.println("Hey There!");
-
 
         return "\n\n" + grammarData;
     }

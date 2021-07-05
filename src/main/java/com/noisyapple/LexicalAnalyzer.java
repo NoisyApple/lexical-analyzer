@@ -243,7 +243,6 @@ public class LexicalAnalyzer {
         for (int i = 0; i < RESERVED_WORDS.size(); i++) {
             data += RESERVED_WORDS.get(i) + "\n";
         }
-        data += "\n\n";
 
         return data;
     }
