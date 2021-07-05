@@ -38,8 +38,6 @@ public class Parser {
                     .println(currentToken.getLexeme() + " ::: " + currentToken.getClassification());
             System.out.println();
 
-
-
             if (grammar.isNonTerminal(currentSymbol)) {
 
                 System.out.println(currentSymbol + " <=> " + currentToken.getClassification());

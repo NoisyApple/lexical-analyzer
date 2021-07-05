@@ -32,8 +32,6 @@ public class LexicalAnalyzer {
     private int indexB;
     private Automaton automaton;
     private SymbolTable symbolTable;
-    private TokenTable tokenTable;
-    private ArrayList<String> errorTable;
 
     // Class constructor.
     public LexicalAnalyzer(String file) {
@@ -43,8 +41,6 @@ public class LexicalAnalyzer {
         indexB = 0;
 
         symbolTable = new SymbolTable();
-        tokenTable = new TokenTable();
-        errorTable = new ArrayList<String>();
 
         // States.
         State sA = new State("A", true, false);
@@ -122,10 +118,8 @@ public class LexicalAnalyzer {
 
                         // Spaces and newline characters are excluded.
                         if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
-
                             throw new Error(
                                     "Lexical error: '" + file.charAt(indexB) + "' is not valid.");
-                            // errorTable.add("'" + file.charAt(indexB) + "' is not valid.");
                         }
                     }
 
@@ -152,11 +146,8 @@ public class LexicalAnalyzer {
                         if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.RESERVED_WORD
                                 && !RESERVED_WORDS.contains(lexeme)) {
 
-                            throw new Error("Lexical error: '" + lexeme + "' is not valid.");
-
-
                             // Otherwise, a lexical error is generated.
-                            // errorTable.add("'" + lexeme + "' is not valid.");
+                            throw new Error("Lexical error: '" + lexeme + "' is not valid.");
 
                             // If the current state after the lexeme is evaluated is the specified
                             // here, a token will be generated and will be considered as an
@@ -166,9 +157,7 @@ public class LexicalAnalyzer {
                                 .getLabel() == LexicalAnalyzer.IDENTIFIER) {
 
                             token = generateToken(lexeme, automaton.getCurrentState());
-
                             symbolTable.installToken(token);
-                            tokenTable.addToken(token);
 
                             tokenFound = true;
 
@@ -176,7 +165,6 @@ public class LexicalAnalyzer {
                             // table.
                         } else {
                             token = generateToken(lexeme, automaton.getCurrentState());
-                            tokenTable.addToken(token);
 
                             tokenFound = true;
                         }
@@ -184,12 +172,8 @@ public class LexicalAnalyzer {
                         // If the lexeme is not valid through the automaton.
                     } else {
 
-                        throw new Error("Lexical error: '" + lexeme + "' is not valid.");
-
-
-
                         // Lexical error.
-                        // errorTable.add("'" + lexeme + "' is not valid.");
+                        throw new Error("Lexical error: '" + lexeme + "' is not valid.");
                     }
 
                     // After a lexeme being found indexA is set into the place of indexB.
@@ -260,14 +244,6 @@ public class LexicalAnalyzer {
             data += RESERVED_WORDS.get(i) + "\n";
         }
         data += "\n\n";
-
-        data += "--------------[TOKEN TABLE]---------------\n";
-        data += tokenTable.toString() + "\n\n";
-
-        data += "--------------[ERROR TABLE]---------------\n";
-        for (int i = 0; i < errorTable.size(); i++) {
-            data += errorTable.get(i) + "\n";
-        }
 
         return data;
     }
