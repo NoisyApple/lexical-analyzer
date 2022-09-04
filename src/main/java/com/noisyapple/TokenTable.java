@@ -20,7 +20,7 @@ public class TokenTable {
     // Returns a String with the data of the table.
     @Override
     public String toString() {
-        String data = "[[LEXEME], [CLASSIFICATION], [ATTRIBUTE]]\n";
+        String data = "[[TOKEN], [TYPE], [CLASSIFICATION], [ID]]\n";
 
         for (int i = 0; i < table.size(); i++) {
             data += table.get(i) + "\n";

@@ -5,9 +5,11 @@ public class Parser {
     private Stack<String> symbolStack;
     private Grammar grammar;
     private LexicalAnalyzer lexicalAnalyzer;
+    private TokenTable tokenTable;
 
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         symbolStack = new Stack<String>();
+        tokenTable = new TokenTable();
 
         this.grammar = grammar;
         this.lexicalAnalyzer = lexicalAnalyzer;
@@ -69,6 +71,9 @@ public class Parser {
 
                     symbolStack.pop();
                     currentSymbol = symbolStack.peek();
+
+                    tokenTable.addToken(currentToken);
+
                     currentToken = lexicalAnalyzer.getNextToken();
                 } else {
                     throw new Error("Syntax error found!");
@@ -84,6 +89,9 @@ public class Parser {
         System.out.println(symbolStack);
         System.out.println("DONE!");
         System.out.println();
+
+        System.out.println("---------------[TOKEN TABLE]--------------");
+        System.out.println(tokenTable);
 
     }
 
