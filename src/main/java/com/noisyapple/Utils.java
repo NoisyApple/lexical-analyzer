@@ -29,4 +29,26 @@ public class Utils {
         return contentCopy;
     }
 
+    // Returns the line of a file based on the given index of a pointer.
+    public static int getLineBasedOnIndex(String file, int index) {
+
+        int pointer = 0;
+        int lineNumber = 1;
+
+        if (index > file.length()) {
+            return -1;
+        }
+
+        while (pointer <= index) {
+            char currentCharacter = file.charAt(pointer);
+
+            if (currentCharacter == '\n')
+                lineNumber++;
+
+            pointer++;
+        }
+
+        return lineNumber;
+    }
+
 }
