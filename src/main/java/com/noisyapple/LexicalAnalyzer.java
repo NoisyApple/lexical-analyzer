@@ -73,23 +73,22 @@ public class LexicalAnalyzer {
         Transition tI_J = new Transition(sI, sJ, "[a-z]");
         Transition tJ_J = new Transition(sJ, sJ, "[a-z]");
 
-        // Both states and Transitions are wrapped inside ArrayList to be passed into Automaton
-        // constructor.
-        ArrayList<State> states =
-                new ArrayList<State>(Arrays.asList(sA, sB, sC, sD, sE, sF, sG, sH, sI, sJ));
-        ArrayList<Transition> transitions =
-                new ArrayList<Transition>(Arrays.asList(tA_B, tA_C, tA_F, tA_H, tA_I, tB_B, tB_D,
+        // Both states and Transitions are wrapped inside ArrayList to be passed into
+        // Automaton constructor.
+        ArrayList<State> states = new ArrayList<State>(Arrays.asList(sA, sB, sC, sD, sE, sF, sG, sH, sI, sJ));
+        ArrayList<Transition> transitions = new ArrayList<Transition>(
+                Arrays.asList(tA_B, tA_C, tA_F, tA_H, tA_I, tB_B, tB_D,
                         tC_D, tD_E, tE_E, tF_F1, tF_F2, tF_G, tG_F1, tG_F2, tI_J, tJ_J));
 
         automaton = new Automaton(states, transitions);
     }
 
-    // Checking wether the content of the file matches the automaton's lexical units.
+    // Checking wether the content of the file matches the automaton's lexical
+    // units.
     public Token getNextToken() {
 
         Token token = null;
         boolean tokenFound = false;
-
 
         // Iterates while indexB is less or equal than the size of the data.
         while (indexB <= file.length() && !tokenFound) {
@@ -98,14 +97,14 @@ public class LexicalAnalyzer {
                 // Whenever a character is found it is passed into the automaton.
                 automaton.insertInput(file.charAt(indexB));
             } else {
-                // A null current state is forced into the automaton so it stops reading the last
-                // lexeme.
+                // A null current state is forced into the automaton so it stops reading the
+                // last lexeme.
                 automaton.insertInput('!');
             }
 
             // Whenever the current state of the automaton is null.
-            // This happens when a the automaton doesn't find a matching transition for the given
-            // value.
+            // This happens when a the automaton doesn't find a matching transition for the
+            // given value.
             if (automaton.getCurrentState() == null) {
 
                 // When both indexes are in the same position.
@@ -113,8 +112,6 @@ public class LexicalAnalyzer {
 
                     // Lexical error.
                     if (indexB < file.length()) {
-
-
 
                         // Spaces and newline characters are excluded.
                         if ((int) file.charAt(indexB) != 10 && (int) file.charAt(indexB) != 32) {
@@ -153,11 +150,16 @@ public class LexicalAnalyzer {
                             // here, a token will be generated and will be considered as an
                             // identifier, therefore it will be added into both the symbol table and
                             // the token table.
-                        } else if (automaton.getCurrentState()
-                                .getLabel() == LexicalAnalyzer.IDENTIFIER) {
+                        } else if (automaton.getCurrentState().getLabel() == LexicalAnalyzer.IDENTIFIER
+                                || automaton.getCurrentState().getLabel() == LexicalAnalyzer.FLOATING_POINT_NUMBER
+                                || automaton.getCurrentState().getLabel() == LexicalAnalyzer.ZERO
+                                || automaton.getCurrentState().getLabel() == LexicalAnalyzer.NATURAL_INTEGER_NUMBER) {
 
                             token = generateToken(lexeme, automaton.getCurrentState());
-                            symbolTable.installToken(token);
+
+                            int currentLineOfFile = Utils.getLineBasedOnIndex(file, indexB);
+
+                            symbolTable.installToken(token, currentLineOfFile);
 
                             tokenFound = true;
 

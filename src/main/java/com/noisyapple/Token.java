@@ -15,19 +15,18 @@ public class Token {
     public static int IDENTIFIER_COUNT = 500;
 
     // Reserved words constant.
-    public static final Hashtable<String, Integer> RESERVED_WORDS =
-            new Hashtable<String, Integer>() {
-                {
-                    put("Programa", 400);
-                    put("Real", 401);
-                    put("Entero", 402);
-                    put("Leer", 403);
-                    put("Escribir", 404);
-                    put("Inicio", 405);
-                    put("Fin", 406);
-                }
-            };
-    private final Hashtable<Integer, String> CLASSIFICATIONS = new Hashtable<Integer, String>() {
+    protected static final Hashtable<String, Integer> RESERVED_WORDS = new Hashtable<String, Integer>() {
+        {
+            put("Programa", 400);
+            put("Real", 401);
+            put("Entero", 402);
+            put("Leer", 403);
+            put("Escribir", 404);
+            put("Inicio", 405);
+            put("Fin", 406);
+        }
+    };
+    protected static final Hashtable<Integer, String> CLASSIFICATIONS = new Hashtable<Integer, String>() {
         {
             put(40, "(");
             put(41, ")");
@@ -51,7 +50,7 @@ public class Token {
         }
     };
 
-    private final Hashtable<String, String> SPECIAL_SYMBOLS_MAP = new Hashtable<String, String>() {
+    protected static final Hashtable<String, String> SPECIAL_SYMBOLS_MAP = new Hashtable<String, String>() {
         {
             put("(", "OPEN PARENTHESIS");
             put(")", "CLOSED PARENTHESIS");
@@ -76,6 +75,8 @@ public class Token {
 
         switch (attribute) {
             case IDENTIFIER:
+                // FIXME: While installing tokens in symbol table this is still getting
+                // incremented, that should not be happening.
                 this.tokenId = Token.IDENTIFIER_COUNT++;
                 break;
             default:
@@ -94,6 +95,14 @@ public class Token {
 
     public String getClassification() {
         return classification;
+    }
+
+    public int getAttribute() {
+        return attribute;
+    }
+
+    public int getTokenId() {
+        return tokenId;
     }
 
     // GETTERS ---
