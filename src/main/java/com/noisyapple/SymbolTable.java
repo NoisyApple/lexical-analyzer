@@ -1,5 +1,6 @@
 package com.noisyapple;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 // Models a SymbolTable.
@@ -28,10 +29,35 @@ public class SymbolTable {
         table.add(new Symbol(token, lineNumber));
     }
 
+    public String resolveOperationType(Symbol symbolA, Symbol symbolB, String actionType) {
+        String symbolAType = symbolA.getType();
+        String symbolBType = symbolB.getType();
+        String operationType = "";
+
+        if (symbolAType == "INTEGER" && symbolBType == "INTEGER") {
+            operationType = "INTEGER";
+        } else if ((symbolAType == "INTEGER") && (symbolBType == "FLOAT")) {
+            operationType = "FLOAT";
+        } else if (symbolAType == "FLOAT" && symbolBType == "INTEGER") {
+            operationType = "FLOAT";
+        } else if (symbolAType == "FLOAT" && symbolBType == "FLOAT") {
+            operationType = "FLOAT";
+        } else {
+            throw new Error("Semantic error ocurred");
+        }
+
+        if (actionType == "EXPRESSION") {
+            actionType = operationType;
+        }
+
+        return operationType;
+
+    }
+
     // Returns a String with the data of the table.
     @Override
     public String toString() {
-        String data = "[[LEXEME], [TYPE], [ATTRIBUTE], [OCCURENCES], [LINES]]\n";
+        String data = "[[LEXEME], [TOKEN], [TYPE], [ATTRIBUTE], [OCCURENCES], [LINES]]\n";
 
         for (int i = 0; i < table.size(); i++) {
             data += table.get(i) + "\n";

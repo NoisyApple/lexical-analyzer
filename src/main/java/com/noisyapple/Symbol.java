@@ -7,6 +7,7 @@ public class Symbol extends Token {
 
     private int occurences;
     private ArrayList<Integer> lines;
+    private String type;
 
     // Class contructor.
     public Symbol(Token token, int lineNumber) {
@@ -14,6 +15,22 @@ public class Symbol extends Token {
 
         occurences = 1;
         lines = new ArrayList<Integer>();
+        int attribute = token.getAttribute();
+
+        switch (attribute) {
+            case NATURAL_INTEGER_NUMBER:
+                type = "INTEGER";
+                break;
+            case ZERO:
+                type = "INTEGER";
+                break;
+            case FLOATING_POINT_NUMBER:
+                type = "FLOAT";
+                break;
+            default:
+                type = "PROCEDURE";
+                break;
+        }
 
         lines.add(lineNumber);
     }
@@ -38,7 +55,19 @@ public class Symbol extends Token {
         return lines;
     }
 
+    public String getType() {
+        return type;
+    }
+
     // GETTERS ---
+
+    // SETTERS +++
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    // SETTERS ---
 
     // Returns a String with the data of the symbol.
     @Override
@@ -46,6 +75,7 @@ public class Symbol extends Token {
         String classificationString;
         String classification = this.getClassification();
         String lexeme = this.getLexeme();
+        String type = this.getType();
         int attribute = this.getAttribute();
         int tokenId = this.getTokenId();
 
@@ -60,7 +90,7 @@ public class Symbol extends Token {
             classificationString = Token.SPECIAL_SYMBOLS_MAP.get(classification);
         }
 
-        return "[" + lexeme + ", " + classificationString + ", " +
+        return "[" + lexeme + ", " + classificationString + ", " + type + ", " +
                 tokenId + ", " + occurences + ", " + lines + "]";
     }
 
