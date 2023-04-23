@@ -1,6 +1,6 @@
 package com.noisyapple;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 // Models a SymbolTable.
@@ -20,7 +20,7 @@ public class SymbolTable {
         // execution stops so that a token is never installed twice.
         for (int i = 0; i < table.size(); i++) {
             if (table.get(i).getLexeme().equals(token.getLexeme())) {
-                table.get(i).increaseOccurences();
+                table.get(i).increaseOccurrences();
                 table.get(i).addLine(lineNumber);
                 return;
             }
@@ -54,10 +54,23 @@ public class SymbolTable {
 
     }
 
+    // Returns a list with the tokens with PENDING type.
+    public ArrayList<Symbol> getPendingTypeSymbols() {
+        ArrayList<Symbol> pendingTypeSymbols = new ArrayList<Symbol>();
+
+        table.forEach((symbol) -> {
+            if (symbol.getType() == "PENDING") {
+                pendingTypeSymbols.add(symbol);
+            }
+        });
+
+        return pendingTypeSymbols;
+    }
+
     // Returns a String with the data of the table.
     @Override
     public String toString() {
-        String data = "[[LEXEME], [TOKEN], [TYPE], [ATTRIBUTE], [OCCURENCES], [LINES]]\n";
+        String data = "[[LEXEME], [TOKEN], [TYPE], [ATTRIBUTE], [OCCURRENCES], [LINES]]\n";
 
         for (int i = 0; i < table.size(); i++) {
             data += table.get(i) + "\n";

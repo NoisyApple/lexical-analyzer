@@ -29,8 +29,8 @@ public class Utils {
         return contentCopy;
     }
 
-    // Returns the line of a file based on the given index of a pointer.
-    public static int getLineBasedOnIndex(String file, int index) {
+    // Returns the line number based on the given index.
+    public static int getLineNumber(String file, int index) {
 
         int pointer = 0;
         int lineNumber = 1;
@@ -49,6 +49,35 @@ public class Utils {
         }
 
         return lineNumber;
+    }
+
+    // Returns the contents of a line based on the given line number.
+    public static String getLineContent(String file, int lineNumber) {
+        int pointer = 0;
+        int currentLineNumber = 1;
+        String lineContent = "";
+
+        while (pointer <= file.length() && currentLineNumber != lineNumber) {
+            char currentCharacter = file.charAt(pointer);
+
+            if (currentCharacter == '\n')
+                currentLineNumber++;
+
+            pointer++;
+        }
+
+        while (pointer <= file.length() && currentLineNumber == lineNumber) {
+            char currentCharacter = file.charAt(pointer);
+
+            if (currentCharacter == '\n')
+                currentLineNumber++;
+
+            lineContent += (currentCharacter != '\n') ? currentCharacter : "";
+
+            pointer++;
+        }
+
+        return lineContent;
     }
 
 }

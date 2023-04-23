@@ -26,6 +26,14 @@ public class Token {
             put("Fin", 406);
         }
     };
+
+    protected static final Hashtable<String, String> DATA_TYPE_RESERVED_WORDS = new Hashtable<String, String>() {
+        {
+            put("Real", "FLOAT");
+            put("Entero", "INTEGER");
+        }
+    };
+
     protected static final Hashtable<Integer, String> CLASSIFICATIONS = new Hashtable<Integer, String>() {
         {
             put(40, "(");
@@ -107,11 +115,9 @@ public class Token {
 
     // GETTERS ---
 
-    // Returns a String with the data of the token.
-    @Override
-    public String toString() {
+    // Returns the type based on the token's attribute.
+    public String getTypeByAttribute(int attribute) {
         String type;
-        String classificationString;
 
         if (attribute >= RESERVED_WORD && attribute < IDENTIFIER) {
             type = "RESERVED WORD";
@@ -124,6 +130,17 @@ public class Token {
         } else {
             type = "SPECIAL SYMBOL";
         }
+
+        return type;
+    }
+
+    // Returns a String with the data of the token.
+    @Override
+    public String toString() {
+        String type;
+        String classificationString;
+
+        type = getTypeByAttribute(attribute);
 
         if (attribute >= RESERVED_WORD && attribute < IDENTIFIER) {
             classificationString = "RESERVED WORD";

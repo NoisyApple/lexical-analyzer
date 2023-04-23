@@ -6,7 +6,7 @@ import java.util.Arrays;
 // Models an Lexical analyzer.
 public class LexicalAnalyzer {
 
-    // State label constans.
+    // State label constants.
     public static final String NATURAL_INTEGER_NUMBER = "B";
     public static final String ZERO = "C";
     public static final String FLOATING_POINT_NUMBER = "E";
@@ -157,7 +157,7 @@ public class LexicalAnalyzer {
 
                             token = generateToken(lexeme, automaton.getCurrentState());
 
-                            int currentLineOfFile = Utils.getLineBasedOnIndex(file, indexB);
+                            int currentLineOfFile = Utils.getLineNumber(file, indexB);
 
                             symbolTable.installToken(token, currentLineOfFile);
 
@@ -232,6 +232,18 @@ public class LexicalAnalyzer {
 
         return generatedToken;
     }
+
+    // GETTERS +++
+
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    // GETTERS ---
 
     // Returns a string with the data of the LexicalAnalyzer.
     @Override

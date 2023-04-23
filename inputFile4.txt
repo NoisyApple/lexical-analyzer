@@ -1,7 +1,8 @@
 Programa
 
 Inicio
-    Entero a, b, c;
+    Entero a, c;
+    Real b;
     a = 15;
     b = a - 3.5;
     c = a + b;

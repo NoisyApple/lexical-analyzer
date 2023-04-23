@@ -5,15 +5,15 @@ import java.util.ArrayList;
 // Models a Symbol, based on a Token with a few differences.
 public class Symbol extends Token {
 
-    private int occurences;
+    private int occurrences;
     private ArrayList<Integer> lines;
     private String type;
 
-    // Class contructor.
+    // Class constructor.
     public Symbol(Token token, int lineNumber) {
         super(token.getLexeme(), token.getAttribute());
 
-        occurences = 1;
+        occurrences = 1;
         lines = new ArrayList<Integer>();
         int attribute = token.getAttribute();
 
@@ -28,16 +28,21 @@ public class Symbol extends Token {
                 type = "FLOAT";
                 break;
             default:
-                type = "PROCEDURE";
+                // System.out.println();
+                // System.out.println();
+                // System.out.println(token);
+
+                // Type is set to PENDING for a later evaluation.
+                type = "PENDING";
                 break;
         }
 
         lines.add(lineNumber);
     }
 
-    // Increases the amount of occurences of the symbol.
-    public void increaseOccurences() {
-        occurences += 1;
+    // Increases the amount of occurrences of the symbol.
+    public void increaseOccurrences() {
+        occurrences += 1;
     }
 
     // Adds the given line number to the list of lines where the symbol was found.
@@ -47,8 +52,8 @@ public class Symbol extends Token {
 
     // GETTERS +++
 
-    public int getOcurrences() {
-        return occurences;
+    public int getOccurrences() {
+        return occurrences;
     }
 
     public ArrayList<Integer> getLines() {
@@ -91,7 +96,7 @@ public class Symbol extends Token {
         }
 
         return "[" + lexeme + ", " + classificationString + ", " + type + ", " +
-                tokenId + ", " + occurences + ", " + lines + "]";
+                tokenId + ", " + occurrences + ", " + lines + "]";
     }
 
 }
