@@ -1,7 +1,9 @@
 package com.noisyapple;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Parser {
 
@@ -87,8 +89,6 @@ public class Parser {
 
         }
 
-        resolvePendingSymbols();
-
         System.out.println();
         System.out.println(symbolStack);
         System.out.println("DONE!");
@@ -96,6 +96,9 @@ public class Parser {
 
         System.out.println("---------------[TOKEN TABLE]--------------");
         System.out.println(tokenTable);
+
+        resolvePendingSymbols();
+        generatePrefixedCode();
 
     }
 
@@ -148,6 +151,56 @@ public class Parser {
             });
 
         });
+    }
+
+    private void generatePrefixedCode() {
+
+        String prefixedCode = "";
+
+        LexicalAnalyzer newLexicalAnalyzer = new LexicalAnalyzer(lexicalAnalyzer.getFile());
+
+        Token currentToken = newLexicalAnalyzer.getNextToken();
+        ArrayList<Token> statementList = new ArrayList<Token>();
+
+        do {
+
+            switch (currentToken.getAttribute()) {
+                case 400: // "Programa" - Adds line as is.
+                case 405: // "Inicio" - Adds line as is.
+                case 406: // "Fin" - Adds line as is.
+                    prefixedCode += currentToken.getLexeme() + "\n";
+                    break;
+                case 44: // Comma - Does nothing.
+                    break;
+                case 59: // Semicolon - process content in statement list and clear.
+                    String finalStatementString = "";
+
+                    for (Token token : Utils.infixToPrefix(statementList)) {
+                        finalStatementString += token.getLexeme() + " ";
+                    }
+
+                    prefixedCode += finalStatementString + "\n";
+
+                    statementList.clear();
+                    break;
+                default: // Adds the token to the statement list for a later processing.
+                    statementList.add(currentToken);
+                    break;
+
+            }
+
+            currentToken = newLexicalAnalyzer.getNextToken();
+        } while (currentToken != null);
+
+        try {
+            File file = new File("intermediateCode.txt");
+            FileWriter writer = new FileWriter(file);
+            writer.write(prefixedCode);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

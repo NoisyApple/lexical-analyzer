@@ -4,6 +4,6 @@ Inicio
     Entero a, c;
     Real b;
     a = 15;
-    b = a - 3.5;
+    b = a - 3.5 / c;
     c = a + b;
 Fin

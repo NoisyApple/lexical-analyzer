@@ -116,7 +116,7 @@ public class Token {
     // GETTERS ---
 
     // Returns the type based on the token's attribute.
-    public String getTypeByAttribute(int attribute) {
+    public static String getTypeByAttribute(int attribute) {
         String type;
 
         if (attribute >= RESERVED_WORD && attribute < IDENTIFIER) {
